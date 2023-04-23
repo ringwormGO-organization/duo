@@ -12,26 +12,42 @@ local vector = require("vector")
 local runtime = {}
 
 --- Player data
-runtime.player = {}
-runtime.player.cards = vector.new() -- card number and color
+runtime.player = {
+    cards = vector.new(),               -- card number and color
+}
 
 --- Stack holding info.
-runtime.stack = {}
-runtime.stack.hap = false;          -- is stack happening?
-runtime.stack.num = 0;              -- card number
-runtime.stack.noc = 0;              -- number of cards
+runtime.stack = {
+    hap = false,                        -- is stack happening?
+    num = 0,                            -- card number
+    noc = 40,                           -- number of cards
+}
 
 --- In-game points
-runtime.points = {}
-runtime.player.p_path = ".points.8b911a8716b94442f9ca3dff20584048536e4c2f47b8b5bb9096cbd43c3432d5";
-runtime.player.temp_pnt = 0;        -- round points
-runtime.player.m_points = 0;        -- num. of pnts. to win
-runtime.player.roun_win = 0;        -- player id of the winner
-runtime.points.match_end = false;   -- has the match ended?
-runtime.points.created = false;     -- .points.file created?
+runtime.points = {
+    p_path = "points.8b911a8716b9",     -- path of file where points are stored
+    temp_pnt = 0,                       -- round points
+    m_points = 0,                       -- num. of pnts. to win
+    round_win = 0,                      -- player id of the winner
+    match_end = false,                  -- has the match ended?
+    created = false,                    -- .points.file created?
+}
 
 --- Settings
-runtime.settings = {}
-
+runtime.settings = {
+    debug_mode = 0,                     -- is debug mode active?
+    colors = 0,                         -- are colors active?
+    players = 0,                        -- number of players
+    special = {                         -- special rules
+        swap_card = 0,                      -- is swap card available?
+        stacking = 0,                       -- is stackingt available?
+        seven_o = 0,                        -- is seven_o rule available?
+    },
+    sequences = vector.new(),            -- AI & network sequence
+    network = {                          -- network settings
+        ip = "127.0.0.1",                   -- IP address
+        port = 5956,                        -- port
+    },
+}
 
 return runtime

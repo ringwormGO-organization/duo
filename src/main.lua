@@ -5,6 +5,8 @@
 --- @LICENSE: ringwormGO General License 1.0 | (RGL) 2022
 ---
 
+local runtime = require("runtime")
+
 local function file_exists(name)
     local f=io.open(name,"r")
     if f~=nil then io.close(f) return true else return false end
@@ -25,3 +27,5 @@ else
     io.input(path);
     print(io.read("*a"));
 end
+
+print("TEST: ", tostring(runtime.settings.network.port));
