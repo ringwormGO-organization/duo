@@ -12,7 +12,7 @@ local runtime = {}
 
 --- Player data
 runtime.player = {
-    cards = vector.new(),               -- card number and color
+    cards = vector.vec                  -- card number and color
 }
 
 --- Stack holding info.
@@ -50,8 +50,8 @@ runtime.settings = {
         stacking = 0,                       -- is stackingt available?
         seven_o = 0,                        -- is seven_o rule available?
     },
-    sequences = vector.new(),            -- AI & network sequence
-    network = {                          -- network settings
+    sequences = vector.vec,             -- AI & network sequence
+    network = {                         -- network settings
         ip = "127.0.0.1",                   -- IP address
         port = 5956,                        -- port
     },

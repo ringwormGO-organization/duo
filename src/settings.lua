@@ -14,6 +14,13 @@ local function file_exists(name)
     if f~=nil then io.close(f) return true else return false end
 end
 
+local function tablelength(T)
+    local count = 0
+    for _ in pairs(T) do count = count + 1 end
+    return count
+end
+  
+
 local settings = {}
 
 function settings.Set(path)
@@ -34,11 +41,42 @@ function settings.Set(path)
         content = io.read("*a");
     end
 
-    local test = json.decode(content)
+    local settings_table = json.decode(content)
 
-    if (test ~= nil and test.match_points ~= nil) then
-        print(test.match_points)
+    if (settings_table ~= nil) then
+        runtime.points.m_points = settings_table.match_points
+        runtime.points.p_path = settings_table.points_path
+
+        runtime.settings.debug_mode = settings_table.debug_mode
+        runtime.settings.colors = settings_table.colors
+        runtime.settings.players = settings_table.players
+
+        runtime.settings.special.swap_card = settings_table.special[1].swap_card
+        runtime.settings.special.stacking = settings_table.special[1].stacking
+        runtime.settings.special.seven_o = settings_table.special[1].seven_o
+
+        for i = 1, runtime.settings.players, 1 do
+            vector.push(runtime.settings.sequences, string.sub(settings_table.ai_sequence, i, i), string.sub(settings_table.network[1].network_sequence, i, i))
+        end
+
+        runtime.settings.network.ip = settings_table.network[1].ip
+        runtime.settings.network.port = settings_table.network[1].port
+    else
+        print("Cannot read settings!")
     end
+
+    io.write("AI sequence: ")
+    for i = 1, tablelength(runtime.settings.sequences.a), 1 do
+        io.write(runtime.settings.sequences.a[i])
+    end
+
+    print("")
+    io.write("Network sequence: ")
+
+    for i = 1, tablelength(runtime.settings.sequences.b), 1 do
+        io.write(runtime.settings.sequences.b[i])
+    end
+    print("")
 end
 
 return settings

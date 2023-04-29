@@ -13,19 +13,19 @@ local gameplay = {}
 
 function gameplay.Gameplay()
     local tmp_input = "";
-    local time = math.randomseed(os.time);
+    local time = math.randomseed(os.time())
     local players = {};
 
     local stacking = {};
 
     if settings.debug_mode == 1 then
-        for i = 0, i < runtime.runtime.available_card, 1
+        for i = 1, runtime.runtime.available_card, 1
         do
             io.write("" .. (settings.colors == 1 and "color" or "no color"));
         end
     end
 
-    for i = 0, i < players, 1
+    for i = 1, players, 1
     do
         io.write("");
     end
