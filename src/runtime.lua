@@ -7,8 +7,7 @@
 
 --- Networking will be added in version 2.0.0
 
-local vector = require("vector")
-
+local vector = require("libraries.vector")
 local runtime = {}
 
 --- Player data
@@ -31,6 +30,14 @@ runtime.points = {
     round_win = 0,                      -- player id of the winner
     match_end = false,                  -- has the match ended?
     created = false,                    -- .points.file created?
+}
+
+runtime.runtime = {
+    available_card = 0,
+    current_c_id = 0,
+    player_turn = 0,
+    is_positive = false,
+    top_card = {},
 }
 
 --- Settings
