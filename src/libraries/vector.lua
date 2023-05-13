@@ -17,4 +17,8 @@ function vector.push(vec, a, b)
     table.insert(vec.b, b)
 end
 
+function vector.erase(vec, a, b, id)
+    
+end
+
 return vector

@@ -64,19 +64,6 @@ function settings.Set(path)
     else
         print("Cannot read settings!")
     end
-
-    io.write("AI sequence: ")
-    for i = 1, tablelength(runtime.settings.sequences.a), 1 do
-        io.write(runtime.settings.sequences.a[i])
-    end
-
-    print("")
-    io.write("Network sequence: ")
-
-    for i = 1, tablelength(runtime.settings.sequences.b), 1 do
-        io.write(runtime.settings.sequences.b[i])
-    end
-    print("")
 end
 
 return settings
