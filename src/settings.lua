@@ -51,9 +51,11 @@ function settings.Set(path)
         runtime.settings.colors = settings_table.colors
         runtime.settings.players = settings_table.players
 
-        runtime.settings.special.swap_card = settings_table.special[1].swap_card
+        runtime.settings.special.progressive = settings_table.special[1].progressive
         runtime.settings.special.stacking = settings_table.special[1].stacking
+        runtime.settings.special.swap_card = settings_table.special[1].swap_card
         runtime.settings.special.seven_o = settings_table.special[1].seven_o
+        runtime.settings.special.jump_in = settings_table.special[1].jump_in
 
         for i = 1, runtime.settings.players, 1 do
             vector.push(runtime.settings.sequences, string.sub(settings_table.ai_sequence, i, i), string.sub(settings_table.network[1].network_sequence, i, i))

@@ -8,11 +8,19 @@
 --- Networking will be added in version 2.0.0
 
 local vector = require("libraries.vector")
+
 local runtime = {}
 
 --- Player data
 runtime.player = {
-    cards = vector.vec                  -- card number and color
+    number = 0,
+    color = 0,
+}
+
+-- Deck data
+runtime.deck = {
+    number = 0,
+    color = 0,
 }
 
 --- Stack holding info.
@@ -46,9 +54,11 @@ runtime.settings = {
     colors = 0,                         -- are colors active?
     players = 0,                        -- number of players
     special = {                         -- special rules
+        progressive = 0,                    -- is progressive rule available?
+        stacking = 0,                       -- is stacking available?
         swap_card = 0,                      -- is swap card available?
-        stacking = 0,                       -- is stackingt available?
         seven_o = 0,                        -- is seven_o rule available?
+        jump_in = 0,                        -- is jump_in rule available?
     },
     sequences = vector.vec,             -- AI & network sequence
     network = {                         -- network settings

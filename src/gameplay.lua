@@ -19,45 +19,203 @@ end
 
 --------------------------------------
 
-local function GenerateDeck()
-    return {}
+local card_number = 0
+
+local function sizeof_table(table)
+    local c = 0;
+    for _ in pairs(table) do c = c + 1 end
+    return c;
+end
+
+local function GetNumber()
+    card_number = card_number + 1
+    return card_number
+end
+
+local function GetColor(num)
+    if num == 13 or num == 14 then
+        return 0
+    else
+        math.random(1,4);
+    end
+end
+
+local function GenerateDeck1()
+    local ret = {}
+
+    --- 10 - skip
+    --- 11 - reverse
+    --- 12 - +2
+    --- 13 - change color
+    --- 14 - +4
+    --- 15 - swap (if enabled)
+    local cards = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14}
+
+    --- 0 - for +4 and change color card
+    --- 1 - red
+    --- 2 - yellow
+    --- 3 - green
+    --- 4 - blue
+    local color = {0,1,2,3,4}
+
+    local num = 108;
+    local gen = {};
+    for i = 1, num, 1 do
+        ret[i] = {
+            number = math.random(0,14)
+        }
+        ret[i].color = GetColor(ret[i].number)
+    end
+
+    return ret;
+end
+
+local function GenerateDeck2()
+    local ret = {}
+
+    --- 10 - skip
+    --- 11 - reverse
+    --- 12 - +2
+    --- 13 - change color
+    --- 14 - +4
+    --- 15 - swap (if enabled)
+    local cards = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14}
+
+    --- 0 - for change color, +4 and swap card
+    --- 1 - red
+    --- 2 - yellow
+    --- 3 - green
+    --- 4 - blue
+    local color = {0,1,2,3,4}
+
+    local num = 108
+    local i = 1
+
+    -- swap card
+    if (runtime.settings.special.swap_card == 1) then
+        num = 109
+        i = 2
+
+        ret[1] = {
+            number = 15,
+            color = 0,
+        }
+    end
+
+    -- +4 cards
+    for x = i, (i + 3), 1 do
+        ret[x] = {
+            number = 14,
+            color = 0,
+        }
+    end
+
+    i = i + 4;
+
+    -- change color cards
+    for x = i, (i + 3), 1 do
+        ret[x] = {
+            number = 13,
+            color = 0,
+        }
+    end
+
+    i = i + 4
+
+    -- zero cards
+    for y = 1, 4, 1 do
+        ret[i] = {
+            number = 0,
+            color = y,
+        }
+
+        i = i + 1
+    end
+
+    -- red cards
+    for y = 1, 2, 1 do
+        for x = i, (i + 11), 1 do
+            ret[x] = {
+                number = GetNumber(),
+                color = 1,
+            }
+        end
+
+        card_number = 0
+        i = i + 12
+    end
+
+    -- yellow cards
+    for y = 1, 2, 1 do
+        for x = i, (i + 11), 1 do
+            ret[x] = {
+                number = GetNumber(),
+                color = 2,
+            }
+        end
+
+        card_number = 0
+        i = i + 12
+    end
+
+    -- green cards
+    for y = 1, 2, 1 do
+        for x = i, (i + 11), 1 do
+            ret[x] = {
+                number = GetNumber(),
+                color = 3,
+            }
+        end
+
+        card_number = 0
+        i = i + 12
+    end
+
+    -- blue cards
+    for y = 1, 2, 1 do
+        for x = i, (i + 11), 1 do
+            ret[x] = {
+                number = GetNumber(),
+                color = 4,
+            }
+        end
+
+        card_number = 0
+        i = i + 12
+    end
+
+    return ret
 end
 
 function gameplay.Gameplay()
-    local tmp_input = "";
-    local time = math.randomseed(os.time())
-    
-    local players = {}                              -- table containing players
+    local players = {}
+    local deck = {}
+
+    deck = GenerateDeck2();
+
+    for i = 1, tablelength(deck), 1 do
+        io.write(deck[i].number)
+        io.write(" | ")
+        print(deck[i].color)
+    end
+
     for i = 1, runtime.settings.players, 1 do
-        players[i] = {}
-    end
+        for j = 1, math.random(5, 8), 1 do
+            
+            if (sizeof_table(deck) < 108) then
+                deck = GenerateDeck2();
+            end
 
-    local stacking = {}
+            players[i] = {
+                number = math.random(0,108),
+            }
+            players[i].color = GetColor(players[i].number)
 
-    local cards = {}                                -- table containing deck
-    cards = GenerateDeck()
-
-    -- Print all cards
-    if settings.debug_mode == 1 then
-        print("Cards: ")
-
-        for i = 1, runtime.available_card, 1 do
-            io.write("" .. (settings.colors == 1 and "color" or "no color"));
+            if (deck ~= nil) then
+                table.remove(deck, players[i].number)
+            end
         end
-    end
-
-    -- Deal the cards to players
-    for i = 1, runtime.settings.players, 1 do
-        if (tablelength(cards) < 7) then
-            cards = GenerateDeck()
-        end
-        
-        local random = 0;
-        for j = 1, 7, 1 do
-            random = math.random(0, runtime.available_card)
-        end
-
-    end
+    end 
 
 end
 
