@@ -43,9 +43,12 @@ runtime.points = {
 runtime.runtime = {
     available_card = 0,
     current_c_id = 0,
-    player_turn = 0,
+    player_turn = 1,
     is_positive = false,
-    top_card = {},
+    top_card = {
+        number = 0,
+        color = 0,
+    },
 }
 
 --- Settings

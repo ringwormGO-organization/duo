@@ -102,6 +102,8 @@ local function GenerateDeck2()
         }
     end
 
+    runtime.runtime.available_card = num
+
     -- +4 cards
     for x = i, (i + 3), 1 do
         ret[x] = {
@@ -194,28 +196,59 @@ function gameplay.Gameplay()
     deck = GenerateDeck2();
 
     for i = 1, tablelength(deck), 1 do
-        io.write(deck[i].number)
-        io.write(" | ")
-        print(deck[i].color)
+        io.write(deck[i].number, " | ", deck[i].color, "\n");
     end
 
     for i = 1, runtime.settings.players, 1 do
         for j = 1, math.random(5, 8), 1 do
             
-            if (sizeof_table(deck) < 108) then
+            if (runtime.runtime.available_card < 8) then
                 deck = GenerateDeck2();
             end
 
             players[i] = {
-                number = math.random(0,108),
+                number = math.random(1, runtime.runtime.available_card),
             }
             players[i].color = GetColor(players[i].number)
 
-            if (deck ~= nil) then
-                table.remove(deck, players[i].number)
-            end
+            runtime.runtime.available_card = runtime.runtime.available_card - 1
+            table.remove(deck, players[i].number)
         end
-    end 
+    end
+
+    -- Top card
+    -- runtime.runtime.top_card[1].number = math.random(1, runtime.runtime.available_card)
+    -- runtime.runtime.top_card[1].color = GetColor(runtime.runtime.top_card[1].number)
+
+    runtime.runtime.available_card = runtime.runtime.available_card - 1
+
+    --- return 0; -> return (nil)
+
+    -- Game loop
+    local game_ended = false
+    local is_new = false
+
+    while (game_ended ~= true)
+    do
+        local input = io.read();
+
+        if input == "new" then
+            print("test1")
+            local rand = 0;
+
+            if is_new == true then
+                
+            end
+
+            rand = math.random(1, runtime.runtime.available_card);
+            runtime.runtime.available_card = runtime.runtime.available_card - 1
+            is_new = true;
+
+        elseif input == "all" then
+            
+        end
+
+    end
 
 end
 
