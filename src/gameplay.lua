@@ -5,9 +5,10 @@
 --- @LICENSE: ringwormGO General License 1.0 | (RGL) 2022
 ---
 
-local vector = require("libraries.vector")
 local runtime = require("runtime")
 local settings = require("settings")
+local strings = require("strings")
+local vector = require("libraries.vector")
 
 local gameplay = {}
 
@@ -40,37 +41,7 @@ local function GetColor(num)
     end
 end
 
-local function GenerateDeck1()
-    local ret = {}
-
-    --- 10 - skip
-    --- 11 - reverse
-    --- 12 - +2
-    --- 13 - change color
-    --- 14 - +4
-    --- 15 - swap (if enabled)
-    local cards = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14}
-
-    --- 0 - for +4 and change color card
-    --- 1 - red
-    --- 2 - yellow
-    --- 3 - green
-    --- 4 - blue
-    local color = {0,1,2,3,4}
-
-    local num = 108;
-    local gen = {};
-    for i = 1, num, 1 do
-        ret[i] = {
-            number = math.random(0,14)
-        }
-        ret[i].color = GetColor(ret[i].number)
-    end
-
-    return ret;
-end
-
-local function GenerateDeck2()
+local function GenerateDeck()
     local ret = {}
 
     --- 10 - skip
@@ -189,21 +160,23 @@ local function GenerateDeck2()
     return ret
 end
 
+local function readInput()
+    return coroutine.yield()
+end
+
+local inputCoroutine = coroutine.create(readInput)
+
 function gameplay.Gameplay()
     local players = {}
     local deck = {}
 
-    deck = GenerateDeck2();
-
-    for i = 1, tablelength(deck), 1 do
-        io.write(deck[i].number, " | ", deck[i].color, "\n");
-    end
+    deck = GenerateDeck();
 
     for i = 1, runtime.settings.players, 1 do
         for j = 1, math.random(5, 8), 1 do
             
             if (runtime.runtime.available_card < 8) then
-                deck = GenerateDeck2();
+                deck = GenerateDeck();
             end
 
             players[i] = {
@@ -217,39 +190,20 @@ function gameplay.Gameplay()
     end
 
     -- Top card
-    -- runtime.runtime.top_card[1].number = math.random(1, runtime.runtime.available_card)
-    -- runtime.runtime.top_card[1].color = GetColor(runtime.runtime.top_card[1].number)
+    local id = math.random(1, runtime.runtime.available_card)
+    runtime.runtime.top_card.number = deck[id].number
+    runtime.runtime.top_card.color = deck[id].color
 
     runtime.runtime.available_card = runtime.runtime.available_card - 1
-
-    --- return 0; -> return (nil)
-
+    table.remove(deck, id)
+    
     -- Game loop
     local game_ended = false
     local is_new = false
 
-    while (game_ended ~= true)
-    do
-        local input = io.read();
-
-        if input == "new" then
-            print("test1")
-            local rand = 0;
-
-            if is_new == true then
-                
-            end
-
-            rand = math.random(1, runtime.runtime.available_card);
-            runtime.runtime.available_card = runtime.runtime.available_card - 1
-            is_new = true;
-
-        elseif input == "all" then
-            
-        end
-
-    end
-
+    -- NEED TO FIX INPUT
+    print("Enter your input:")
+    local tinput = io.read();
 end
 
 return gameplay
